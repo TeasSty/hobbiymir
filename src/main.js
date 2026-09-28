@@ -122,7 +122,6 @@ function render() {
         </div>
         <figure class="hero__figure">
           <img src="images/gallery/hero.jpg" alt="Нити натуральных бусин и камней" width="1400" height="900" fetchpriority="high">
-          <figcaption class="hero__note">Камни которые<br>вдохновляют! ♡</figcaption>
         </figure>
       </section>
 

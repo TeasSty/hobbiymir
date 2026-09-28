@@ -240,26 +240,31 @@ svg { width: 18px; height: 18px; flex: none; }
 
 /* ——— Hero ——— */
 .hero {
-  display: grid;
-  grid-template-columns: minmax(360px, 0.92fr) minmax(0, 1.08fr);
-  min-height: 420px;
-  background: var(--bg-soft);
+  position: relative;
+  isolation: isolate;
+  height: clamp(520px, 42vw, 600px);
+  background: var(--bg);
   overflow: hidden;
 }
 
 .hero__copy {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 48px 36px 48px max(40px, calc((100vw - var(--shell)) / 2));
+  width: min(34rem, 46%);
+  height: 100%;
+  padding: 48px 28px 48px max(40px, calc((100vw - var(--shell)) / 2));
+  animation: hero-rise 0.65s ease both;
 }
 
 .hero__copy .eyebrow { margin-bottom: 16px; }
 
 .hero h1 {
   max-width: 11ch;
-  font-size: clamp(2.75rem, 5.2vw, 4.6rem);
+  font-size: clamp(2.75rem, 5vw, 4.4rem);
 }
 
 .hero__lead {
@@ -278,34 +283,42 @@ svg { width: 18px; height: 18px; flex: none; }
 }
 
 .hero__figure {
-  position: relative;
-  min-height: 420px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 60%;
   margin: 0;
-  overflow: hidden;
+  pointer-events: none;
+  animation: hero-rise 0.75s ease 0.08s both;
+}
+
+.hero__figure::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 16%;
+  background: linear-gradient(90deg, var(--bg) 0%, transparent 100%);
+  pointer-events: none;
 }
 
 .hero__figure img {
   width: 100%;
   height: 100%;
-  min-height: 420px;
   object-fit: cover;
-  object-position: 55% 50%;
+  object-position: 58% 48%;
 }
 
-.hero__note {
-  position: absolute;
-  top: 14%;
-  left: 8%;
-  padding: 10px 12px;
-  border-radius: 3px;
-  background: rgba(248, 245, 237, 0.78);
-  color: #4a4336;
-  font-family: var(--serif);
-  font-size: 20px;
-  font-style: italic;
-  line-height: 1.05;
-  transform: rotate(-6deg);
-  pointer-events: none;
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ——— Info strip ——— */
@@ -845,9 +858,8 @@ svg { width: 18px; height: 18px; flex: none; }
 
 /* ——— Responsive ——— */
 @media (min-width: 1400px) {
-  .hero,
-  .hero__figure,
-  .hero__figure img { min-height: 460px; }
+  .hero { height: 620px; }
+  .hero__figure { width: 58%; }
 }
 
 @media (max-width: 1100px) {
@@ -860,13 +872,15 @@ svg { width: 18px; height: 18px; flex: none; }
   .nav a { font-size: 11px; }
 
   .hero {
-    grid-template-columns: minmax(300px, 0.95fr) minmax(0, 1.05fr);
-    min-height: 360px;
+    height: clamp(480px, 52vw, 560px);
   }
 
-  .hero__copy { padding-left: 28px; }
-  .hero__figure,
-  .hero__figure img { min-height: 360px; }
+  .hero__copy {
+    width: min(32rem, 48%);
+    padding-left: 28px;
+  }
+
+  .hero__figure { width: 62%; }
 
   .cat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
@@ -925,22 +939,39 @@ svg { width: 18px; height: 18px; flex: none; }
   .mobile-nav a:hover { background: #f0eee8; }
 
   .hero {
-    grid-template-columns: 1fr;
-    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    height: auto;
   }
 
-  .hero__copy { padding: 32px 22px 24px; }
+  .hero__copy {
+    width: 100%;
+    height: auto;
+    padding: 32px 22px 24px;
+  }
 
   .hero h1 { font-size: clamp(2.6rem, 10vw, 3.6rem); max-width: none; }
 
-  .hero__figure,
-  .hero__figure img {
-    min-height: 260px;
-    height: 48vw;
-    max-height: 340px;
+  .hero__figure {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: min(48vw, 340px);
+    min-height: 240px;
   }
 
-  .hero__note { font-size: 16px; top: 10%; left: 6%; }
+  .hero__figure::after {
+    inset: 0 0 auto 0;
+    width: auto;
+    height: 14%;
+    background: linear-gradient(180deg, var(--bg) 0%, transparent 100%);
+  }
+
+  .hero__figure img {
+    width: 100%;
+    height: 100%;
+    object-position: 50% 42%;
+  }
 
   .info-strip__grid { grid-template-columns: 1fr 1fr; }
 
@@ -1041,6 +1072,11 @@ svg { width: 18px; height: 18px; flex: none; }
   *, *::before, *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .hero__copy,
+  .hero__figure {
+    animation: none;
   }
 }
 
