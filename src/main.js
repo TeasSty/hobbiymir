@@ -48,7 +48,7 @@ function productCard(p) {
   const fav = favorites.has(p.id);
   return `
     <article class="product-card reveal" data-id="${p.id}">
-      <a class="product-card__media" href="${p.href}" target="_blank" rel="noopener">
+      <a class="product-card__media photo-plate" href="${p.href}" target="_blank" rel="noopener">
         <img src="${p.image}" alt="${p.title}" loading="lazy" width="400" height="480" />
       </a>
       <button class="icon-btn product-card__fav ${fav ? 'is-active' : ''}" type="button" data-fav="${p.id}" aria-label="В избранное">
@@ -70,9 +70,21 @@ function productCard(p) {
   `;
 }
 
+function plant(src, className) {
+  return `<img class="plant ${className}" src="${src}" alt="" aria-hidden="true" data-plant loading="lazy" />`;
+}
+
 function render() {
   const app = document.querySelector('#app');
   app.innerHTML = `
+    <div class="ambient" aria-hidden="true">
+      <div class="ambient__wash"></div>
+      <div class="ambient__glow ambient__glow--a"></div>
+      <div class="ambient__glow ambient__glow--b"></div>
+      <div class="ambient__glow ambient__glow--c"></div>
+      <div class="ambient__shape ambient__shape--a"></div>
+      <div class="ambient__shape ambient__shape--b"></div>
+    </div>
     <div class="grain" aria-hidden="true"></div>
 
     <header class="header" data-header>
@@ -132,7 +144,9 @@ function render() {
     </div>
 
     <main id="top">
-      <section class="hero">
+      <section class="hero stage">
+        ${plant('images/decor/branch-left.svg', 'plant--hero-left')}
+        ${plant('images/decor/sprig.svg', 'plant--hero-right')}
         <div class="hero__copy">
           <p class="eyebrow hero-anim">Натуральные камни и фурнитура</p>
           <h1 class="hero-anim">
@@ -149,7 +163,7 @@ function render() {
           </div>
         </div>
         <div class="hero__visual hero-visual">
-          <div class="hero__frame">
+          <div class="hero__frame photo-plate">
             <img
               src="images/gallery/hero.jpg"
               alt="Натуральные камни в нитях"
@@ -162,7 +176,7 @@ function render() {
         </div>
       </section>
 
-      <section class="micro-info">
+      <section class="micro-info glass-panel">
         <div class="micro-info__item">
           <span class="micro-info__icon">${icon('pin')}</span>
           <div>
@@ -179,7 +193,8 @@ function render() {
         </div>
       </section>
 
-      <section class="section" id="categories">
+      <section class="section stage" id="categories">
+        ${plant('images/decor/branch-right.svg', 'plant--cat-right')}
         <div class="section__head reveal">
           <div>
             <p class="eyebrow">Каталог</p>
@@ -190,9 +205,9 @@ function render() {
         <div class="category-grid">
           ${categories
             .map(
-              (c) => `
-            <a class="category-card reveal" href="${c.href}" target="_blank" rel="noopener">
-              <div class="category-card__media">
+              (c, i) => `
+            <a class="category-card ${i % 2 ? 'category-card--glass' : 'category-card--matte'} reveal" href="${c.href}" target="_blank" rel="noopener">
+              <div class="category-card__media photo-plate">
                 <img src="${c.image}" alt="${c.title}" loading="lazy" width="480" height="360" />
               </div>
               <div class="category-card__body">
@@ -209,7 +224,8 @@ function render() {
         </div>
       </section>
 
-      <section class="section" id="arrivals">
+      <section class="section stage" id="arrivals">
+        ${plant('images/decor/sprig.svg', 'plant--arrivals-left')}
         <div class="section__head reveal">
           <div>
             <p class="eyebrow">Свежие поступления</p>
@@ -225,7 +241,9 @@ function render() {
         </div>
       </section>
 
-      <section class="build section" id="build">
+      <section class="build section stage" id="build">
+        ${plant('images/decor/branch-left.svg', 'plant--build-left')}
+        ${plant('images/decor/branch-right.svg', 'plant--build-right')}
         <div class="build__head reveal">
           <div>
             <p class="eyebrow">Сборка</p>
@@ -238,7 +256,7 @@ function render() {
           ${builds
             .map(
               (b) => `
-            <a class="build-card" href="${b.href}" target="_blank" rel="noopener">
+            <a class="build-card photo-plate" href="${b.href}" target="_blank" rel="noopener">
               <img src="${b.image}" alt="${b.title}" loading="lazy" width="360" height="420" />
               <span>${b.title}</span>
             </a>
@@ -246,22 +264,20 @@ function render() {
             )
             .join('')}
         </div>
-        <svg class="build__deco" viewBox="0 0 200 80" aria-hidden="true">
-          <path d="M10 50c30-40 60-40 90 0s60 40 90 0" fill="none" stroke="currentColor" stroke-width="1" opacity=".35"/>
-        </svg>
       </section>
 
-      <section class="stone section" id="stone">
+      <section class="stone section stage" id="stone">
+        ${plant('images/decor/sprig.svg', 'plant--stone-right')}
         <div class="stone__panel reveal">
           <p class="eyebrow">${stoneOfWeek.eyebrow}</p>
           <h2>${stoneOfWeek.title}</h2>
           <p>${stoneOfWeek.text}</p>
           <a class="btn btn--light" href="${stoneOfWeek.href}" target="_blank" rel="noopener">Смотреть камень ${icon('arrow')}</a>
         </div>
-        <div class="stone__photo reveal">
+        <div class="stone__photo photo-plate reveal">
           <img src="${stoneOfWeek.image}" alt="${stoneOfWeek.title}" loading="lazy" width="900" height="1100" />
         </div>
-        <aside class="stone__aside reveal">
+        <aside class="stone__aside glass-panel reveal">
           <p class="eyebrow">Другие камни</p>
           <div class="stone__grid">
             ${stoneOfWeek.variants
@@ -278,15 +294,17 @@ function render() {
         </aside>
       </section>
 
-      <section class="help reveal">
-        <div class="help__inner">
+      <section class="help reveal stage">
+        ${plant('images/decor/branch-left.svg', 'plant--help-left')}
+        <div class="help__inner glass-panel">
           <h2>Не знаете, что выбрать?</h2>
           <p>Поможем подобрать камни и фурнитуру для вашего украшения.</p>
           <a class="btn btn--primary" href="${site.vk}" target="_blank" rel="noopener">Написать нам ${icon('arrow')}</a>
         </div>
       </section>
 
-      <section class="store section" id="contacts">
+      <section class="store section stage" id="contacts">
+        ${plant('images/decor/sprig.svg', 'plant--store-right')}
         <div class="store__copy reveal">
           <p class="eyebrow">Магазин</p>
           <h2>Наш магазин в Казани</h2>
@@ -296,7 +314,7 @@ function render() {
           </ul>
           <a class="btn btn--primary" href="${site.map}" target="_blank" rel="noopener">Построить маршрут ${icon('arrow')}</a>
         </div>
-        <div class="store__photo reveal">
+        <div class="store__photo photo-plate reveal">
           <img src="images/gallery/store.jpg" alt="Товары магазина МОЙ ХОББИМИР" loading="lazy" width="900" height="700" />
         </div>
       </section>
@@ -339,7 +357,35 @@ function render() {
   bindUI();
   updateBadges();
   observeReveals();
+  bindPlantDrift();
   requestAnimationFrame(() => document.body.classList.add('is-ready'));
+}
+
+function bindPlantDrift() {
+  const plants = [...document.querySelectorAll('[data-plant]')];
+  if (!plants.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let ticking = false;
+  const update = () => {
+    const y = window.scrollY;
+    plants.forEach((el, i) => {
+      const dir = i % 2 === 0 ? 1 : -1;
+      const shift = (y * 0.018 * dir) % 18;
+      el.style.transform = `translate3d(0, ${shift.toFixed(2)}px, 0)`;
+    });
+    ticking = false;
+  };
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    },
+    { passive: true },
+  );
+  update();
 }
 
 function bindUI() {
