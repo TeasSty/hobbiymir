@@ -421,48 +421,34 @@ p {
 }
 
 /* =========================
-   HERO — editorial magazine spread
+   HERO — calm premium ecommerce
    ========================= */
 .hero {
   position: relative;
-  min-height: min(94vh, 940px);
-  padding: 4.5rem 0 0;
-  overflow: visible;
-}
-
-.hero__light {
-  position: absolute;
-  inset: -8% 20% auto -12%;
-  height: 70%;
-  background:
-    radial-gradient(circle at 28% 30%, rgba(255, 255, 255, 0.85), transparent 42%),
-    radial-gradient(circle at 70% 60%, rgba(186, 158, 112, 0.12), transparent 45%);
-  pointer-events: none;
-  z-index: 0;
+  background: var(--cream);
+  padding: 3.5rem 0 4rem;
+  overflow: hidden;
 }
 
 .hero__layout {
-  position: relative;
-  z-index: 1;
   display: grid;
-  grid-template-columns: minmax(240px, 0.78fr) minmax(0, 1.35fr);
-  gap: clamp(0.25rem, 2vw, 1.5rem);
-  align-items: end;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+  gap: clamp(2.75rem, 3.5vw, 3.75rem);
+  align-items: center;
   width: min(var(--shell), calc(100% - 2.5rem));
   margin-inline: auto;
-  min-height: min(80vh, 820px);
 }
 
 .hero__copy {
-  position: relative;
-  z-index: 4;
-  padding: 0 0 4.2rem;
-  max-width: 34rem;
+  max-width: 28rem;
 }
 
 .hero h1 {
-  font-size: clamp(3.2rem, 7.2vw, 5.8rem);
-  max-width: 11ch;
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
 }
 
 .hero h1 em {
@@ -486,127 +472,28 @@ p {
   margin-top: 1.55rem;
 }
 
-.hero__chip {
-  margin-top: 1.45rem;
-  display: inline-flex;
-  flex-direction: column;
-  gap: 0.12rem;
-  padding: 0.8rem 1.05rem;
-  border-radius: 16px;
-  max-width: 20rem;
-}
-
-.hero__chip strong {
-  font-size: 0.92rem;
-}
-
-.hero__chip span {
-  color: var(--mute);
-  font-size: 0.78rem;
-}
-
 .hero__visual {
   position: relative;
-  height: min(88vh, 900px);
-  margin-right: max(-1.25rem, calc((100vw - var(--shell)) / -2 - 0.2rem));
-  margin-bottom: -3.2rem;
+  min-width: 0;
 }
 
 .hero__shot {
-  position: absolute;
-  top: -4%;
-  right: -8%;
-  bottom: 2%;
-  left: 0;
   margin: 0;
-  border-radius: 2px 0 0 56px;
+  border-radius: 6px;
   overflow: hidden;
-  box-shadow:
-    0 32px 80px rgba(40, 30, 20, 0.16),
-    0 2px 0 rgba(255, 255, 255, 0.35) inset;
-  -webkit-mask-image: linear-gradient(
-    105deg,
-    transparent 0%,
-    #000 7%,
-    #000 92%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
-  mask-image: linear-gradient(
-    105deg,
-    transparent 0%,
-    #000 7%,
-    #000 92%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
 }
 
 .hero__shot img {
   width: 100%;
-  height: 100%;
+  height: 620px;
   object-fit: cover;
-  object-position: 58% 40%;
-  filter: saturate(1.04) contrast(1.03);
-  transform-origin: 60% 40%;
-}
-
-.hero__accent {
-  position: absolute;
-  left: -4%;
-  bottom: 10%;
-  z-index: 2;
-  width: min(240px, 34%);
-  margin: 0;
-  aspect-ratio: 3 / 3.8;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow:
-    0 22px 48px rgba(40, 30, 20, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-.hero__accent img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 45%;
-}
-
-.hero__float {
-  position: absolute;
-  z-index: 5;
-  right: 8%;
-  bottom: 4%;
-  width: 158px;
-  border-radius: 16px;
-  overflow: hidden;
-  transition: transform 0.45s var(--ease);
-}
-
-.hero__float:hover {
-  transform: translateY(-3px);
-}
-
-.hero__float img {
-  width: 100%;
-  aspect-ratio: 4 / 4.5;
-  object-fit: cover;
-}
-
-.hero__float span {
+  object-position: center;
   display: block;
-  padding: 0.55rem 0.7rem 0.7rem;
-  font-family: var(--serif);
-  font-size: 1rem;
-  line-height: 1.2;
+  transition: transform 0.55s var(--ease);
 }
 
-.hero__float small {
-  display: block;
-  margin-top: 0.12rem;
-  font-family: var(--sans);
-  font-size: 0.76rem;
-  color: var(--ink-2);
+.hero__shot:hover img {
+  transform: scale(1.02);
 }
 
 .botany {
@@ -616,25 +503,6 @@ p {
   opacity: 0.62;
   filter: blur(0.2px) saturate(0.88);
   will-change: translate;
-}
-
-.botany--hero {
-  left: -8%;
-  bottom: -10%;
-  width: min(360px, 56%);
-  z-index: 4;
-  opacity: 0.72;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
-
-.botany--hero-2 {
-  right: 22%;
-  top: -8%;
-  width: min(130px, 18%);
-  opacity: 0.38;
-  transform: rotate(22deg);
-  z-index: 1;
 }
 
 .botany--cats {
@@ -663,7 +531,7 @@ p {
 @keyframes riseIn {
   from {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -674,7 +542,7 @@ p {
 @keyframes photoIn {
   from {
     opacity: 0;
-    transform: scale(1.045);
+    transform: scale(1.01);
   }
   to {
     opacity: 1;
@@ -684,7 +552,7 @@ p {
 
 .hero-anim {
   opacity: 0;
-  animation: riseIn 0.9s var(--ease) forwards;
+  animation: riseIn 0.8s var(--ease) forwards;
 }
 
 .hero__copy .hero-anim:nth-child(1) {
@@ -699,25 +567,10 @@ p {
 .hero__copy .hero-anim:nth-child(4) {
   animation-delay: 0.36s;
 }
-.hero__copy .hero-anim:nth-child(5) {
-  animation-delay: 0.46s;
-}
 
-.hero__float.hero-anim {
-  animation-delay: 0.58s;
-}
-
-.hero-anim-photo img {
+.hero-anim-photo {
   opacity: 0;
-  animation: photoIn 1.25s var(--ease) forwards;
-}
-
-.hero__shot img {
-  animation-delay: 0.14s;
-}
-
-.hero__accent img {
-  animation-delay: 0.34s;
+  animation: photoIn 1s var(--ease) 0.14s forwards;
 }
 
 /* BANDS */
@@ -1288,7 +1141,7 @@ p {
 
   .reveal,
   .hero-anim,
-  .hero-anim-photo img,
+  .hero-anim-photo,
   .botany {
     opacity: 1 !important;
     transform: none !important;
@@ -1310,52 +1163,29 @@ p {
   }
 
   .hero {
-    min-height: auto;
-    padding: 1.2rem 0 0;
+    padding: 2rem 0 2.5rem;
   }
 
   .hero__layout {
     grid-template-columns: 1fr;
-    min-height: 0;
-    gap: 1rem;
+    gap: 1.75rem;
   }
 
   .hero__copy {
-    padding: 0.5rem 0 0.5rem;
     max-width: none;
+    order: 1;
   }
 
   .hero__visual {
-    height: min(72vw, 480px);
-    margin-right: -1.25rem;
-    margin-left: -0.25rem;
-    margin-bottom: -1.5rem;
+    order: 2;
   }
 
   .hero__shot {
-    top: 0;
-    right: 0;
-    bottom: 8%;
-    left: 12%;
-    border-radius: 18px 0 0 28px;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 100%);
-    mask-image: linear-gradient(90deg, transparent 0%, #000 14%, #000 100%);
+    border-radius: 6px;
   }
 
-  .hero__accent {
-    left: 0;
-    bottom: 4%;
-    width: min(160px, 36%);
-  }
-
-  .hero__float {
-    right: 6%;
-    bottom: 0;
-    width: 128px;
-  }
-
-  .botany--hero-2 {
-    display: none;
+  .hero__shot img {
+    height: max(280px, 62vw);
   }
 
   .mosaic {
@@ -1421,31 +1251,10 @@ p {
     align-items: flex-start;
   }
 
-  .hero__visual {
-    height: 68vw;
-    min-height: 280px;
-    margin-right: -0.75rem;
-  }
-
-  .hero__accent {
-    display: none;
-  }
-
-  .hero__float {
-    width: 112px;
-  }
-
   .botany--cats,
   .botany--build,
-  .botany--store,
-  .botany--hero-2 {
+  .botany--store {
     display: none;
-  }
-
-  .botany--hero {
-    width: min(160px, 42%);
-    opacity: 0.55;
-    bottom: -4%;
   }
 
   .footer__grid {
@@ -1469,15 +1278,6 @@ p {
 
   .hero__layout {
     width: calc(100% - 1.5rem);
-  }
-
-  .hero__visual {
-    margin-right: -0.75rem;
-  }
-
-  .hero__shot {
-    left: 4%;
-    border-radius: 14px 0 0 22px;
   }
 }
 

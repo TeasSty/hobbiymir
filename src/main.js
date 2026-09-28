@@ -116,13 +116,11 @@ function render() {
     </div>
 
     <main id="top">
-      <!-- HERO: editorial magazine spread — photo as physical object -->
+      <!-- HERO: calm premium ecommerce -->
       <section class="hero">
-        <div class="hero__light" aria-hidden="true"></div>
-
         <div class="hero__layout">
           <div class="hero__copy">
-            <p class="kicker hero-anim">Натуральные камни · Казань</p>
+            <p class="kicker hero-anim">Натуральные камни и фурнитура</p>
             <h1 class="hero-anim">
               Вдохновение<br />
               <em>в каждой бусине</em>
@@ -133,11 +131,6 @@ function render() {
             </p>
             <div class="hero__actions hero-anim">
               <a class="btn btn--dark" href="#categories">Перейти в каталог ${icon('arrow')}</a>
-              <a class="btn btn--soft" href="#arrivals">Новинки</a>
-            </div>
-            <div class="hero__chip glass hero-anim">
-              <strong>${site.address}</strong>
-              <span>Пн–Пт 10–19 · Сб 10–17 · Вс выходной</span>
             </div>
           </div>
 
@@ -145,15 +138,6 @@ function render() {
             <figure class="hero__shot hero-anim-photo">
               <img src="images/gallery/hero.jpg" alt="Натуральные камни в нитях" width="1400" height="1600" fetchpriority="high" />
             </figure>
-            <figure class="hero__accent hero-anim-photo">
-              <img src="images/gallery/raw-stones.jpg" alt="" width="640" height="800" loading="eager" />
-            </figure>
-            <a class="hero__float glass hero-anim" href="${featured.href}" target="_blank" rel="noopener">
-              <img src="${featured.image}" alt="${featured.title}" width="200" height="240" />
-              <span>${featured.title}<small>${formatPrice(featured.price)}</small></span>
-            </a>
-            <img class="botany botany--hero" src="images/decor/olive.svg" alt="" aria-hidden="true" data-plant />
-            <img class="botany botany--hero-2" src="images/decor/sprig.svg" alt="" aria-hidden="true" data-plant />
           </div>
         </div>
       </section>
