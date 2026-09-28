@@ -1,4 +1,4 @@
-import './style.css';
+﻿import './style.css';
 import {
   site,
   nav,
@@ -12,6 +12,23 @@ import {
 const favorites = new Set(JSON.parse(localStorage.getItem('hm-favs') || '[]'));
 const cart = JSON.parse(localStorage.getItem('hm-cart') || '[]');
 
+function icon(name) {
+  const paths = {
+    search: '<circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/>',
+    heart: '<path d="M20.8 8.8c0 5-8.8 10-8.8 10S3.2 13.8 3.2 8.8A4.7 4.7 0 0 1 12 6.5a4.7 4.7 0 0 1 8.8 2.3Z"/>',
+    bag: '<path d="M5 8h14l-1 13H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+    arrow: '<path d="M4 12h15m-6-6 6 6-6 6"/>',
+    pin: '<path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>',
+    truck: '<path d="M2 6h12v11H2zM14 10h4l4 4v3h-8z"/><circle cx="7" cy="19" r="2"/><circle cx="18" cy="19" r="2"/>',
+    card: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
+    menu: '<path d="M3 6h18M3 12h18M3 18h18"/>',
+    close: '<path d="m6 6 12 12M18 6 6 18"/>',
+    chevron: '<path d="m9 18 6-6-6-6"/>',
+    chevronDown: '<path d="m6 9 6 6 6-6"/>',
+  };
+  return `<svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${paths[name] || ''}</g></svg>`;
+}
+
 function saveState() {
   localStorage.setItem('hm-favs', JSON.stringify([...favorites]));
   localStorage.setItem('hm-cart', JSON.stringify(cart));
@@ -21,7 +38,6 @@ function saveState() {
 function updateBadges() {
   document.querySelectorAll('[data-cart-count]').forEach((el) => {
     el.textContent = String(cart.length);
-    el.hidden = cart.length === 0;
   });
   document.querySelectorAll('[data-fav-count]').forEach((el) => {
     el.textContent = String(favorites.size);
@@ -29,354 +45,291 @@ function updateBadges() {
   });
 }
 
-function icon(name) {
-  const icons = {
-    search: `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M16.5 16.5 21 21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
-    heart: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-9.2-8.2C1.2 9 2.6 6 5.7 5.4c1.8-.3 3.4.5 4.3 1.8C11 6 12.6 5.1 14.4 5.4c3.1.6 4.5 3.6 2.9 6.4C19 15.6 12 20 12 20Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>`,
-    bag: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.5h11l-.8 11.2a1.5 1.5 0 0 1-1.5 1.4H8.8a1.5 1.5 0 0 1-1.5-1.4L6.5 8.5Z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
-    arrow: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    menu: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
-    close: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
-    leaf: `<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M38 10C22 12 12 24 10 38c14-2 26-12 28-28Z" fill="currentColor"/><path d="M14 34c6-6 12-10 20-14" fill="none" stroke="#F4EEE4" stroke-width="1.3" stroke-linecap="round"/></svg>`,
-  };
-  return icons[name] || '';
-}
-
-function productCard(p, variant = '') {
-  const fav = favorites.has(p.id);
+function productCard(product) {
   return `
-    <article class="p-card ${variant}" data-id="${p.id}">
-      <a class="p-card__media" href="${p.href}" target="_blank" rel="noopener">
-        <img src="${p.image}" alt="${p.title}" loading="lazy" width="480" height="560" />
+    <article class="product-card">
+      <a class="product-card__media" href="${product.href}" target="_blank" rel="noopener">
+        <img src="${product.image}" alt="${product.title} — ${product.meta}" loading="lazy" width="400" height="400">
       </a>
-      <button class="icon-btn p-card__fav ${fav ? 'is-active' : ''}" type="button" data-fav="${p.id}" aria-label="В избранное">${icon('heart')}</button>
-      <div class="p-card__meta">
-        <div>
-          <h3>${p.title}</h3>
-          <p>${p.meta}</p>
+      <button class="product-card__fav ${favorites.has(product.id) ? 'is-active' : ''}" type="button" data-fav="${product.id}" aria-label="В избранное">${icon('heart')}</button>
+      <div class="product-card__body">
+        <div class="product-card__text">
+          <h3>${product.title}</h3>
+          <p>${product.meta}</p>
+          <strong>${formatPrice(product.price)}</strong>
         </div>
-        <div class="p-card__row">
-          <span>${formatPrice(p.price)}</span>
-          <button class="icon-btn p-card__cart" type="button" data-add="${p.id}" aria-label="В корзину">${icon('bag')}</button>
-        </div>
+        <button class="product-card__cart" type="button" data-add="${product.id}" aria-label="В корзину">${icon('bag')}</button>
       </div>
-    </article>
-  `;
+    </article>`;
 }
 
 function render() {
-  const featured = products.find((p) => p.featured) || products[0];
-  const rest = products.filter((p) => p.id !== featured.id);
-  const heroCat = categories.find((c) => c.size === 'hero');
-  const sideCats = categories.filter((c) => c.size === 'md');
-  const smallCats = categories.filter((c) => c.size === 'sm');
+  const arrivals = products.slice(0, 6);
 
   document.querySelector('#app').innerHTML = `
-    <div class="paper" aria-hidden="true">
-      <div class="paper__grain"></div>
-    </div>
-
     <header class="header" data-header>
-      <div class="shell header__inner">
-        <a class="logo" href="#top">
-          <span class="logo__mark">${icon('leaf')}</span>
+      <div class="shell header__bar">
+        <a class="logo" href="#top" aria-label="${site.name} — на главную">
+          <img class="logo__img" src="images/gallery/logo.jpg" alt="" width="40" height="40">
           <span>
             <strong>${site.name}</strong>
             <small>${site.tagline}</small>
           </span>
         </a>
+
         <nav class="nav" aria-label="Основная навигация">
-          ${nav.map((item) => `<a href="${item.href}"${item.href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${item.label}</a>`).join('')}
+          ${nav.map((item) => `
+            <a href="${item.href}">
+              ${item.label}${item.dropdown ? `<span class="nav__caret">${icon('chevronDown')}</span>` : ''}
+            </a>`).join('')}
         </nav>
-        <div class="header__actions">
-          <button class="icon-btn" type="button" data-search-open aria-label="Поиск">${icon('search')}</button>
-          <button class="icon-btn" type="button" aria-label="Избранное">${icon('heart')}<span class="badge" data-fav-count hidden>0</span></button>
-          <button class="icon-btn" type="button" aria-label="Корзина">${icon('bag')}<span class="badge" data-cart-count hidden>0</span></button>
+
+        <form class="search" action="${site.market}" method="get" target="_blank" rel="noopener">
+          <input type="search" name="q" placeholder="Поиск товаров, камней, фурнитуры…" aria-label="Поиск">
+          <button type="submit" aria-label="Найти">${icon('search')}</button>
+        </form>
+
+        <div class="header__tools">
+          <button class="icon-btn" type="button" data-favorites-open aria-label="Избранное">
+            ${icon('heart')}
+            <span class="badge" data-fav-count hidden>0</span>
+          </button>
+          <a class="icon-btn" href="${site.market}" target="_blank" rel="noopener" aria-label="Корзина">
+            ${icon('bag')}
+            <span class="badge badge--always" data-cart-count>0</span>
+          </a>
           <button class="icon-btn header__burger" type="button" data-menu-open aria-label="Меню">${icon('menu')}</button>
         </div>
       </div>
+
+      <div class="mobile-nav" data-mobile-nav hidden>
+        <nav aria-label="Мобильная навигация">
+          ${nav.map((item) => `<a href="${item.href}">${item.label}</a>`).join('')}
+        </nav>
+      </div>
     </header>
 
-    <div class="drawer" data-mobile-nav hidden>
-      <div class="drawer__panel">
-        <button class="icon-btn" type="button" data-menu-close aria-label="Закрыть">${icon('close')}</button>
-        <nav>${nav.map((item) => `<a href="${item.href}"${item.href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}>${item.label}</a>`).join('')}</nav>
-      </div>
-    </div>
-
-    <div class="search" data-search hidden>
-      <form class="search__form" action="${site.market}" method="get" target="_blank">
-        <input type="search" name="q" placeholder="Поиск по каталогу…" />
-        <button class="btn btn--dark" type="submit">Искать ${icon('arrow')}</button>
-      </form>
-      <button class="search__close" type="button" data-search-close aria-label="Закрыть">${icon('close')}</button>
-    </div>
-
     <main id="top">
-      <!-- HERO: calm premium ecommerce -->
-      <section class="hero">
-        <div class="hero__layout">
-          <div class="hero__copy">
-            <p class="kicker hero-anim">Натуральные камни и фурнитура</p>
-            <h1 class="hero-anim">
-              Вдохновение<br />
-              <em>в каждой бусине</em>
-            </h1>
-            <p class="hero__lead hero-anim">
-              Натуральные камни, фурнитура и всё для создания украшений.
-              Для хобби, творчества и стильных аксессуаров.
-            </p>
-            <div class="hero__actions hero-anim">
-              <a class="btn btn--dark" href="#categories">Перейти в каталог ${icon('arrow')}</a>
-            </div>
-          </div>
-
-          <div class="hero__visual">
-            <figure class="hero__shot hero-anim-photo">
-              <img src="images/gallery/hero.jpg" alt="Натуральные камни в нитях" width="1400" height="1600" fetchpriority="high" />
-            </figure>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__copy">
+          <p class="eyebrow">Натуральные камни и фурнитура</p>
+          <h1 id="hero-title">Вдохновение<br>в каждой бусине</h1>
+          <p class="hero__lead">Натуральные камни, фурнитура и всё для создания украшений в Казани. Для вашего хобби, творчества и стильных аксессуаров.</p>
+          <div class="hero__actions">
+            <a class="btn btn--solid" href="#categories">Перейти в каталог ${icon('arrow')}</a>
+            <a class="btn btn--ghost" href="#arrivals">Новинки</a>
           </div>
         </div>
+        <figure class="hero__figure">
+          <img src="images/gallery/hero.jpg" alt="Нити натуральных бусин и камней" width="1400" height="900" fetchpriority="high">
+          <figcaption class="hero__note">Камни которые<br>вдохновляют! ♡</figcaption>
+        </figure>
       </section>
 
-      <section class="service-strip" aria-label="Условия магазина">
-        <div class="service-strip__inner">
-          <p><span>Магазин в Казани</span><strong>${site.address}</strong><small>${site.hours[0].days} ${site.hours[0].time}, ${site.hours[1].days} ${site.hours[1].time}</small></p>
-          <p><span>Доставка</span><strong>По всей России</strong><small>СДЭК, Почта России</small></p>
-          <p><span>Оплата</span><strong>Картой и наличными</strong><small>В магазине</small></p>
-        </div>
-      </section>
-
-      <section class="band" id="categories">
-        <div class="shell">
-          <div class="band__head reveal">
+      <section class="info-strip" aria-label="Информация о магазине">
+        <div class="shell info-strip__grid">
+          <div class="info-item">
+            ${icon('pin')}
             <div>
-              <p class="kicker">Каталог</p>
-              <h2>Популярные категории</h2>
+              <strong>${site.addressFull}</strong>
+              <span>${site.hoursShort}</span>
             </div>
-            <a class="text-link" href="${site.market}" target="_blank" rel="noopener">Весь каталог ${icon('arrow')}</a>
           </div>
-          <div class="category-grid reveal">
-            <a class="category-card category-card--lead" href="${heroCat.href}" target="_blank" rel="noopener">
-              <img src="${heroCat.image}" alt="${heroCat.title}" loading="lazy" width="900" height="560" />
-              <span><strong>${heroCat.title}</strong><small>${heroCat.desc}</small></span>
-            </a>
-            ${[...sideCats, ...smallCats].map((c) => `<a class="category-card" href="${c.href}" target="_blank" rel="noopener"><img src="${c.image}" alt="${c.title}" loading="lazy" width="520" height="360" /><span><strong>${c.title}</strong><small>${c.desc}</small></span></a>`).join('')}
-          </div>
-        </div>
-      </section>
-
-      <!-- PRODUCTS: featured + journal grid -->
-      <section class="band band--tight" id="arrivals">
-        <div class="shell">
-          <div class="band__head reveal">
+          <div class="info-item">
+            ${icon('truck')}
             <div>
-              <p class="kicker">Свежие поступления</p>
-              <h2>Новые камни<br />в нитях</h2>
-            </div>
-            <div class="rail-nav">
-              <button type="button" data-scroll-left aria-label="Назад">${icon('arrow')}</button>
-              <button type="button" data-scroll-right aria-label="Вперёд">${icon('arrow')}</button>
+              <strong>Доставка по России</strong>
+              <span class="info-item__carriers">${site.carriers.join(' · ')}</span>
             </div>
           </div>
-
-          <div class="arrivals reveal">
-            ${productCard(featured, 'p-card--featured')}
-            <div class="arrivals__rail" data-rail>
-              ${rest.map((p) => productCard(p)).join('')}
+          <div class="info-item">
+            ${icon('card')}
+            <div>
+              <strong>Наличные, карта, QR-код</strong>
+              <span>Оплата в магазине и онлайн</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- BUILD -->
-      <section class="build" id="build">
-        <div class="shell build__inner reveal">
+      <section class="block shell" id="categories">
+        <div class="block__head">
+          <h2>Популярные категории</h2>
+          <a class="link" href="${site.market}" target="_blank" rel="noopener">Весь каталог ${icon('arrow')}</a>
+        </div>
+        <div class="cat-grid">
+          ${categories.map((cat) => `
+            <a class="cat-card" href="${cat.href}" target="_blank" rel="noopener">
+              <img src="${cat.image}" alt="${cat.title}" loading="lazy" width="360" height="280">
+              <span class="cat-card__foot">
+                <span>
+                  <strong>${cat.title}</strong>
+                  <small>${cat.desc}</small>
+                </span>
+                <i aria-hidden="true">${icon('chevron')}</i>
+              </span>
+            </a>`).join('')}
+        </div>
+      </section>
+
+      <section class="block shell" id="arrivals">
+        <div class="block__head">
+          <h2>Свежие поступления</h2>
+          <div class="rail-nav">
+            <button type="button" data-scroll-left aria-label="Назад">${icon('arrow')}</button>
+            <button type="button" data-scroll-right aria-label="Вперёд">${icon('arrow')}</button>
+          </div>
+        </div>
+        <div class="product-rail" data-rail>${arrivals.map(productCard).join('')}</div>
+      </section>
+
+      <section class="build">
+        <div class="shell build__inner">
           <div class="build__copy">
-            <p class="kicker">Сборка</p>
-            <h2>Соберите своё<br />украшение</h2>
-            <p>Подберём всё необходимое для вашего изделия.</p>
-            <a class="btn btn--dark" href="${site.market}" target="_blank" rel="noopener">Выбрать изделие ${icon('arrow')}</a>
+            <p class="eyebrow">Вдохновение для ваших идей</p>
+            <h2>Соберите своё<br>украшение</h2>
+            <p>Подберём все необходимые материалы для вашего изделия.</p>
+            <a class="btn btn--solid" href="${site.market}" target="_blank" rel="noopener">Выбрать изделие ${icon('arrow')}</a>
           </div>
-          <div class="build__strip">
-            ${builds
-              .map(
-                (b) => `
-              <a class="build__card" href="${b.href}" target="_blank" rel="noopener">
-                <img src="${b.image}" alt="${b.title}" loading="lazy" width="280" height="340" />
-                <span>${b.title}</span>
-              </a>
-            `,
-              )
-              .join('')}
+          <div class="build__rail">
+            ${builds.map((item) => `
+              <a class="build-card" href="${item.href}" target="_blank" rel="noopener">
+                <img src="${item.image}" alt="${item.title}" loading="lazy" width="280" height="280">
+                <span>${item.title}${icon('chevron')}</span>
+              </a>`).join('')}
           </div>
         </div>
-        <img class="botany botany--build" src="images/decor/sprig.svg" alt="" aria-hidden="true" data-plant />
       </section>
 
-      <!-- STONE OF WEEK -->
-      <section class="stone" id="stone">
-        <div class="shell stone__layout reveal">
-          <div class="stone__copy">
-            <p class="kicker">${stoneOfWeek.eyebrow}</p>
-            <h2>${stoneOfWeek.title}</h2>
+      <section class="stone-week shell" aria-labelledby="stone-title">
+        <article class="stone-feature">
+          <div class="stone-feature__copy">
+            <p class="eyebrow">${stoneOfWeek.eyebrow}</p>
+            <h2 id="stone-title">${stoneOfWeek.title}</h2>
             <p>${stoneOfWeek.text}</p>
-            <a class="btn btn--dark" href="${stoneOfWeek.href}" target="_blank" rel="noopener">Смотреть камень ${icon('arrow')}</a>
-            <div class="stone__thumbs">
-              ${stoneOfWeek.variants
-                .map(
-                  (v) => `
-                <a href="${v.href}" target="_blank" rel="noopener">
-                  <img src="${v.image}" alt="${v.name}" loading="lazy" width="96" height="96" />
-                  <span>${v.name}</span>
-                </a>
-              `,
-                )
-                .join('')}
-            </div>
+            <a class="btn btn--light" href="${stoneOfWeek.href}" target="_blank" rel="noopener">${stoneOfWeek.cta} ${icon('arrow')}</a>
           </div>
-          <div class="stone__shot">
-            <img src="${stoneOfWeek.image}" alt="${stoneOfWeek.title}" loading="lazy" width="900" height="1100" />
+          <div class="stone-feature__photo">
+            <img src="${stoneOfWeek.image}" alt="${stoneOfWeek.title}" loading="lazy" width="900" height="700">
           </div>
-        </div>
+        </article>
+        <aside class="stone-aside">
+          <div class="stone-aside__head">
+            <h3>Другие популярные камни</h3>
+          </div>
+          <div class="stone-aside__grid">
+            ${stoneOfWeek.variants.map((v) => `
+              <a href="${v.href}" target="_blank" rel="noopener">
+                <img src="${v.image}" alt="${v.name}" loading="lazy" width="200" height="140">
+                <span>${v.name}${icon('arrow')}</span>
+              </a>`).join('')}
+          </div>
+        </aside>
       </section>
 
-      <!-- HELP -->
-      <section class="help reveal">
-        <div class="shell help__box glass">
+      <section class="about-row shell" id="contacts">
+        <article class="about-card about-card--store">
+          <img src="images/gallery/store.jpg" alt="Магазин в Казани" loading="lazy" width="320" height="240">
           <div>
-            <h2>Не знаете, что выбрать?</h2>
-            <p>Поможем подобрать камни и фурнитуру для вашего украшения.</p>
+            <h3>Наш магазин в Казани</h3>
+            <p>${site.addressFull}</p>
+            <p class="about-card__meta">${site.hoursShort}</p>
+            <a class="link" href="${site.map}" target="_blank" rel="noopener">Построить маршрут ${icon('arrow')}</a>
           </div>
-          <a class="btn btn--dark" href="${site.vk}" target="_blank" rel="noopener">Написать нам ${icon('arrow')}</a>
-        </div>
-      </section>
+        </article>
 
-      <!-- STORE -->
-      <section class="store" id="contacts">
-        <div class="shell store__layout reveal">
-          <div class="store__copy">
-            <p class="kicker">Магазин</p>
-            <h2>Наш магазин<br />в Казани</h2>
-            <p class="store__addr">${site.address}</p>
-            <ul>
-              ${site.hours.map((h) => `<li><span>${h.days}</span><strong>${h.time}</strong></li>`).join('')}
-            </ul>
-            <a class="btn btn--dark" href="${site.map}" target="_blank" rel="noopener">Построить маршрут ${icon('arrow')}</a>
+        <article class="about-card about-card--delivery">
+          <div>
+            <h3>Доставляем по всей России</h3>
+            <div class="carrier-logos" aria-label="Службы доставки">
+              <b>СДЭК</b>
+              <b>OZON</b>
+              <b>Яндекс<br>Доставка</b>
+              <b>ПОЧТА<br>РОССИИ</b>
+            </div>
+            <p class="about-card__meta">Быстро и надёжно — в любой город</p>
+            <a class="link" href="${site.vk}" target="_blank" rel="noopener">Подробнее ${icon('arrow')}</a>
           </div>
-          <div class="store__shot">
-            <img src="images/gallery/store.jpg" alt="Товары магазина МОЙ ХОББИМИР" loading="lazy" width="900" height="700" />
+          <img src="images/gallery/gallery2.jpg" alt="Упаковка заказа" loading="lazy" width="180" height="220">
+        </article>
+
+        <article class="about-card about-card--pay">
+          <div>
+            <h3>Способы оплаты</h3>
+            <p>Наличные, карта, QR-код — в магазине и онлайн.</p>
+            <a class="btn btn--ghost btn--sm" href="${site.vk}" target="_blank" rel="noopener">Подробнее ${icon('arrow')}</a>
           </div>
-        </div>
-        <img class="botany botany--store" src="images/decor/branch-left.svg" alt="" aria-hidden="true" data-plant />
+          <img src="images/gallery/novinki.jpg" alt="Оплата в магазине" loading="lazy" width="180" height="220">
+        </article>
       </section>
     </main>
 
     <footer class="footer">
-      <div class="shell footer__grid">
-        <div>
-          <strong>${site.name}</strong>
-          <p>${site.tagline} · ${site.city}</p>
-        </div>
-        <div>
-          <p class="footer__label">Разделы</p>
-          <a href="#categories">Каталог</a>
-          <a href="#categories">Камни</a>
-          <a href="#categories">Фурнитура</a>
-          <a href="#contacts">Контакты</a>
-        </div>
-        <div>
-          <p class="footer__label">Контакты</p>
-          ${site.phones.map((p) => `<a href="${p.href}"><span>${p.label}</span>${p.value}</a>`).join('')}
-        </div>
-        <div>
-          <p class="footer__label">Адрес</p>
-          <p>${site.city},<br />${site.address}</p>
-          <a href="${site.vk}" target="_blank" rel="noopener">ВКонтакте</a>
-        </div>
+      <div class="shell footer__inner">
+        <a class="logo" href="#top">
+          <img class="logo__img" src="images/gallery/logo.jpg" alt="" width="36" height="36">
+          <span>
+            <strong>${site.name}</strong>
+            <small>${site.tagline}</small>
+          </span>
+        </a>
+        <p>${site.addressFull} · ${site.phones.map((p) => `<a href="${p.href}">${p.value}</a>`).join(' · ')}</p>
+        <a class="link" href="${site.vk}" target="_blank" rel="noopener">Мы ВКонтакте ${icon('arrow')}</a>
       </div>
-      <p class="shell footer__note">Товары и цены — из каталога VK · ${new Date().getFullYear()}</p>
     </footer>
   `;
 
   bindUI();
   updateBadges();
-  observeReveals();
 }
 
 function bindUI() {
   const header = document.querySelector('[data-header]');
-  const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 12);
+  const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  const drawer = document.querySelector('[data-mobile-nav]');
+  const mobileNav = document.querySelector('[data-mobile-nav]');
   document.querySelector('[data-menu-open]')?.addEventListener('click', () => {
-    drawer.hidden = false;
-    document.body.classList.add('nav-open');
+    mobileNav.hidden = !mobileNav.hidden;
   });
-  document.querySelector('[data-menu-close]')?.addEventListener('click', () => {
-    drawer.hidden = true;
-    document.body.classList.remove('nav-open');
-  });
-  drawer?.querySelectorAll('a').forEach((a) =>
-    a.addEventListener('click', () => {
-      drawer.hidden = true;
-      document.body.classList.remove('nav-open');
-    }),
-  );
-
-  const search = document.querySelector('[data-search]');
-  document.querySelector('[data-search-open]')?.addEventListener('click', () => {
-    search.hidden = false;
-    search.querySelector('input')?.focus();
-  });
-  document.querySelector('[data-search-close]')?.addEventListener('click', () => {
-    search.hidden = true;
+  mobileNav?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => { mobileNav.hidden = true; });
   });
 
   const rail = document.querySelector('[data-rail]');
-  document.querySelector('[data-scroll-left]')?.addEventListener('click', () => rail?.scrollBy({ left: -280, behavior: 'smooth' }));
-  document.querySelector('[data-scroll-right]')?.addEventListener('click', () => rail?.scrollBy({ left: 280, behavior: 'smooth' }));
+  document.querySelector('[data-scroll-left]')?.addEventListener('click', () => {
+    rail?.scrollBy({ left: -260, behavior: 'smooth' });
+  });
+  document.querySelector('[data-scroll-right]')?.addEventListener('click', () => {
+    rail?.scrollBy({ left: 260, behavior: 'smooth' });
+  });
 
-  document.querySelectorAll('[data-fav]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.fav;
+  document.querySelector('[data-favorites-open]')?.addEventListener('click', () => {
+    const saved = products.filter((p) => favorites.has(p.id));
+    window.alert(saved.length
+      ? `В избранном: ${saved.map((p) => p.title).join(', ')}`
+      : 'В избранном пока пусто');
+  });
+
+  document.querySelectorAll('[data-fav]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const id = button.dataset.fav;
       if (favorites.has(id)) favorites.delete(id);
       else favorites.add(id);
-      btn.classList.toggle('is-active', favorites.has(id));
+      button.classList.toggle('is-active', favorites.has(id));
       saveState();
     });
   });
 
-  document.querySelectorAll('[data-add]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      cart.push(btn.dataset.add);
+  document.querySelectorAll('[data-add]').forEach((button) => {
+    button.addEventListener('click', () => {
+      cart.push(button.dataset.add);
       saveState();
-      btn.classList.add('is-added');
-      setTimeout(() => btn.classList.remove('is-added'), 500);
+      button.classList.add('is-added');
+      window.setTimeout(() => button.classList.remove('is-added'), 400);
     });
   });
-}
-
-function observeReveals() {
-  const els = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window)) {
-    els.forEach((el) => el.classList.add('is-in'));
-    return;
-  }
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-in');
-          io.unobserve(e.target);
-        }
-      });
-    },
-    { threshold: 0.12, rootMargin: '0px 0px -30px 0px' },
-  );
-  els.forEach((el) => io.observe(el));
 }
 
 render();

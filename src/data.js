@@ -2,10 +2,11 @@
 
 export const site = {
   name: 'МОЙ ХОББИМИР',
-  tagline: 'натуральные камни, фурнитура',
+  tagline: 'натуральные камни и фурнитура',
   city: 'Казань',
   address: 'ул. Маршала Чуйкова, 53',
   addressFull: 'Казань, ул. Маршала Чуйкова, 53',
+  hoursShort: 'Пн–Пт 10:00–19:00, Сб 10:00–17:00',
   hours: [
     { days: 'Пн–Пт', time: '10:00–19:00' },
     { days: 'Сб', time: '10:00–17:00' },
@@ -19,15 +20,16 @@ export const site = {
   vk: 'https://vk.com/rukodeliye_kazan',
   market: 'https://vk.com/market-15939030',
   map: 'https://yandex.ru/maps/?text=%D0%9A%D0%B0%D0%B7%D0%B0%D0%BD%D1%8C%2C%20%D1%83%D0%BB.%20%D0%9C%D0%B0%D1%80%D1%88%D0%B0%D0%BB%D0%B0%20%D0%A7%D1%83%D0%B9%D0%BA%D0%BE%D0%B2%D0%B0%2C%2053',
+  carriers: ['СДЭК', 'OZON', 'Яндекс', 'Почта'],
 };
 
 export const nav = [
-  { label: 'Каталог', href: '#categories' },
+  { label: 'Каталог', href: '#categories', dropdown: true },
   { label: 'Камни', href: '#categories' },
   { label: 'Фурнитура', href: '#categories' },
   { label: 'Бисер', href: '#categories' },
   { label: 'Инструменты', href: '#categories' },
-  { label: 'Доставка', href: site.vk },
+  { label: 'Доставка', href: '#contacts' },
   { label: 'Контакты', href: '#contacts' },
 ];
 
@@ -35,69 +37,48 @@ export const categories = [
   {
     id: 'stones',
     title: 'Натуральные камни',
-    desc: 'Нити, галтовка, самородки и срезы',
+    desc: 'агат, кварц, аметист…',
     image: 'images/gallery/raw-stones.jpg',
     href: 'https://vk.com/market-15939030',
-    size: 'hero',
-  },
-  {
-    id: 'beads',
-    title: 'Бусины',
-    desc: 'Камень, керамика, лэмпворк',
-    image: 'images/gallery/ceramic.jpg',
-    href: 'https://vk.com/market-15939030',
-    size: 'md',
   },
   {
     id: 'findings',
     title: 'Фурнитура',
-    desc: 'Сталь и позолота',
+    desc: 'застёжки, швензы, цепи…',
     image: 'images/gallery/findings.jpg',
     href: 'https://vk.com/market-15939030',
-    size: 'md',
   },
   {
-    id: 'pendants',
-    title: 'Подвески',
-    desc: 'Смола, эмаль, камень',
-    image: 'images/gallery/pendants.jpg',
+    id: 'beads',
+    title: 'Бусины',
+    desc: 'камень, керамика, лэмпворк…',
+    image: 'images/gallery/ceramic.jpg',
     href: 'https://vk.com/market-15939030',
-    size: 'sm',
   },
   {
     id: 'seed',
     title: 'Бисер',
-    desc: 'Бисер и стеклярус',
+    desc: 'бисер и стеклярус…',
     image: 'images/gallery/velvet.jpg',
     href: 'https://vk.com/market-15939030',
-    size: 'sm',
+  },
+  {
+    id: 'pendants',
+    title: 'Подвески',
+    desc: 'смола, эмаль, камень…',
+    image: 'images/gallery/pendants.jpg',
+    href: 'https://vk.com/market-15939030',
   },
   {
     id: 'cords',
     title: 'Шнуры и нити',
-    desc: 'Ланка, леска, резинка',
+    desc: 'ланка, леска, резинка…',
     image: 'images/gallery/pearl.jpg',
     href: 'https://vk.com/market-15939030',
-    size: 'sm',
-  },
-  {
-    id: 'tools',
-    title: 'Инструменты',
-    desc: 'Для сборки украшений',
-    image: 'images/gallery/gallery2.jpg',
-    href: 'https://vk.com/market-15939030',
-    size: 'sm',
-  },
-  {
-    id: 'cabochons',
-    title: 'Кабошоны',
-    desc: 'Вставки и коннекторы',
-    image: 'images/gallery/dzi.jpg',
-    href: 'https://vk.com/market-15939030',
-    size: 'sm',
   },
 ];
 
+/** Товары из VK market — цены и ссылки только из data-raw.json */
 export const products = [
   {
     id: '13497384',
@@ -106,7 +87,6 @@ export const products = [
     price: 890,
     image: 'images/products/13497384.jpg',
     href: 'https://vk.ru/market/product/kvarts-rozovy-klever-14kh5mm-otverstie-12mm-pnit6128-15939030-13497384',
-    featured: true,
   },
   {
     id: '13497423',
@@ -141,6 +121,14 @@ export const products = [
     href: 'https://vk.ru/market/product/avantyurin-naturalny-zeleny-klever-14kh5mm-otverstie-12mm-pnit6126-15939030-13497368',
   },
   {
+    id: '13497363',
+    title: 'Агат белый',
+    meta: 'клевер 14×5 мм',
+    price: 890,
+    image: 'images/products/13497363.jpg',
+    href: 'https://vk.ru/market/product/agat-bely-klever-14kh5mm-otverstie-12mm-pnit6125-15939030-13497363',
+  },
+  {
     id: '13490913',
     title: 'Лазурит',
     meta: 'галтовка',
@@ -156,14 +144,6 @@ export const products = [
     image: 'images/products/13490942.jpg',
     href: 'https://vk.ru/market/product/tigrovy-glaz-galtovka-20-12kh17-7mm-nit6117-15939030-13490942',
   },
-  {
-    id: '13497357',
-    title: 'Аметист',
-    meta: 'клевер 14×5 мм',
-    price: 1230,
-    image: 'images/products/13497357.jpg',
-    href: 'https://vk.ru/market/product/ametist-klever-14kh5mm-otverstie-12mm-pnit6123-15939030-13497357',
-  },
 ];
 
 export const builds = [
@@ -178,13 +158,40 @@ export const stoneOfWeek = {
   title: 'Розовый кварц',
   eyebrow: 'Камень недели',
   text: 'Нежный натуральный камень для браслетов, бус и подвесок. В каталоге — нити, звёзды и клевер.',
+  cta: 'Смотреть кварц',
   image: 'images/gallery/rose-feature.jpg',
   href: 'https://vk.ru/market/product/kvarts-rozovy-klever-14kh5mm-otverstie-12mm-pnit6128-15939030-13497384',
   variants: [
-    { name: 'Аметист', image: 'images/products/13497393.jpg', href: 'https://vk.ru/market/product/ametist-zvezda-6kh2mm-otverstie-07mm-nit6129-15939030-13497393' },
-    { name: 'Агат', image: 'images/products/13497363.jpg', href: 'https://vk.ru/market/product/agat-bely-klever-14kh5mm-otverstie-12mm-pnit6125-15939030-13497363' },
-    { name: 'Тигровый глаз', image: 'images/products/13497406.jpg', href: 'https://vk.ru/market/product/tigrovy-glaz-zvezda-6kh2mm-otverstie-07mm-nit6133-15939030-13497406' },
-    { name: 'Лазурит', image: 'images/products/13490913.jpg', href: 'https://vk.ru/market/product/lazurit-galtovka-20-12kh17-7mm-nit6114-15939030-13490913' },
+    {
+      name: 'Аметист',
+      image: 'images/products/13497393.jpg',
+      href: 'https://vk.ru/market/product/ametist-zvezda-6kh2mm-otverstie-07mm-nit6129-15939030-13497393',
+    },
+    {
+      name: 'Агат',
+      image: 'images/products/13497363.jpg',
+      href: 'https://vk.ru/market/product/agat-bely-klever-14kh5mm-otverstie-12mm-pnit6125-15939030-13497363',
+    },
+    {
+      name: 'Тигровый глаз',
+      image: 'images/products/13497406.jpg',
+      href: 'https://vk.ru/market/product/tigrovy-glaz-zvezda-6kh2mm-otverstie-07mm-nit6133-15939030-13497406',
+    },
+    {
+      name: 'Лазурит',
+      image: 'images/products/13490913.jpg',
+      href: 'https://vk.ru/market/product/lazurit-galtovka-20-12kh17-7mm-nit6114-15939030-13490913',
+    },
+    {
+      name: 'Авантюрин',
+      image: 'images/products/13497368.jpg',
+      href: 'https://vk.ru/market/product/avantyurin-naturalny-zeleny-klever-14kh5mm-otverstie-12mm-pnit6126-15939030-13497368',
+    },
+    {
+      name: 'Лабрадор',
+      image: 'images/products/13490906.jpg',
+      href: 'https://vk.ru/market/product/labrador-galtovka-20-12kh17-7mm-nit6113-15939030-13490906',
+    },
   ],
 };
 
