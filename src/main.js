@@ -74,9 +74,6 @@ function render() {
   document.querySelector('#app').innerHTML = `
     <div class="paper" aria-hidden="true">
       <div class="paper__grain"></div>
-      <div class="paper__glow paper__glow--1"></div>
-      <div class="paper__glow paper__glow--2"></div>
-      <div class="paper__glow paper__glow--3"></div>
     </div>
 
     <header class="header" data-header>
@@ -142,52 +139,31 @@ function render() {
         </div>
       </section>
 
-      <!-- CATEGORIES: asymmetric editorial mosaic -->
+      <section class="service-strip" aria-label="Условия магазина">
+        <div class="service-strip__inner">
+          <p><span>Магазин в Казани</span><strong>${site.address}</strong><small>${site.hours[0].days} ${site.hours[0].time}, ${site.hours[1].days} ${site.hours[1].time}</small></p>
+          <p><span>Доставка</span><strong>По всей России</strong><small>СДЭК, Почта России</small></p>
+          <p><span>Оплата</span><strong>Картой и наличными</strong><small>В магазине</small></p>
+        </div>
+      </section>
+
       <section class="band" id="categories">
         <div class="shell">
           <div class="band__head reveal">
             <div>
               <p class="kicker">Каталог</p>
-              <h2>Популярные<br />категории</h2>
+              <h2>Популярные категории</h2>
             </div>
             <a class="text-link" href="${site.market}" target="_blank" rel="noopener">Весь каталог ${icon('arrow')}</a>
           </div>
-
-          <div class="mosaic reveal">
-            <a class="mosaic__hero" href="${heroCat.href}" target="_blank" rel="noopener">
-              <img src="${heroCat.image}" alt="${heroCat.title}" loading="lazy" width="900" height="1100" />
-              <div class="mosaic__caption">
-                <h3>${heroCat.title}</h3>
-                <p>${heroCat.desc}</p>
-              </div>
+          <div class="category-grid reveal">
+            <a class="category-card category-card--lead" href="${heroCat.href}" target="_blank" rel="noopener">
+              <img src="${heroCat.image}" alt="${heroCat.title}" loading="lazy" width="900" height="560" />
+              <span><strong>${heroCat.title}</strong><small>${heroCat.desc}</small></span>
             </a>
-            <div class="mosaic__stack">
-              ${sideCats
-                .map(
-                  (c) => `
-                <a class="mosaic__card" href="${c.href}" target="_blank" rel="noopener">
-                  <img src="${c.image}" alt="${c.title}" loading="lazy" width="520" height="360" />
-                  <div><h3>${c.title}</h3><p>${c.desc}</p></div>
-                </a>
-              `,
-                )
-                .join('')}
-            </div>
-            <div class="mosaic__row">
-              ${smallCats
-                .map(
-                  (c) => `
-                <a class="mosaic__mini" href="${c.href}" target="_blank" rel="noopener">
-                  <img src="${c.image}" alt="${c.title}" loading="lazy" width="320" height="240" />
-                  <span>${c.title}</span>
-                </a>
-              `,
-                )
-                .join('')}
-            </div>
+            ${[...sideCats, ...smallCats].map((c) => `<a class="category-card" href="${c.href}" target="_blank" rel="noopener"><img src="${c.image}" alt="${c.title}" loading="lazy" width="520" height="360" /><span><strong>${c.title}</strong><small>${c.desc}</small></span></a>`).join('')}
           </div>
         </div>
-        <img class="botany botany--cats" src="images/decor/branch-right.svg" alt="" aria-hidden="true" data-plant />
       </section>
 
       <!-- PRODUCTS: featured + journal grid -->
@@ -326,7 +302,6 @@ function render() {
   bindUI();
   updateBadges();
   observeReveals();
-  bindPlantDrift();
 }
 
 function bindUI() {
@@ -402,30 +377,6 @@ function observeReveals() {
     { threshold: 0.12, rootMargin: '0px 0px -30px 0px' },
   );
   els.forEach((el) => io.observe(el));
-}
-
-function bindPlantDrift() {
-  const plants = [...document.querySelectorAll('[data-plant]')];
-  if (!plants.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  let ticking = false;
-  const update = () => {
-    const y = window.scrollY;
-    plants.forEach((el, i) => {
-      const shift = ((y * 0.015) * (i % 2 ? -1 : 1)) % 14;
-      el.style.translate = `0 ${shift.toFixed(1)}px`;
-    });
-    ticking = false;
-  };
-  window.addEventListener(
-    'scroll',
-    () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-    },
-    { passive: true },
-  );
 }
 
 render();
