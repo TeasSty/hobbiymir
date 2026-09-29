@@ -20,7 +20,6 @@ function icon(name) {
     arrow: '<path d="M4 12h15m-6-6 6 6-6 6"/>',
     pin: '<path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>',
     truck: '<path d="M2 6h12v11H2zM14 10h4l4 4v3h-8z"/><circle cx="7" cy="19" r="2"/><circle cx="18" cy="19" r="2"/>',
-    card: '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',
     menu: '<path d="M3 6h18M3 12h18M3 18h18"/>',
     close: '<path d="m6 6 12 12M18 6 6 18"/>',
     chevron: '<path d="m9 18 6-6-6-6"/>',
@@ -141,13 +140,6 @@ function render() {
               <span class="info-item__carriers">${site.carriers.join(' · ')}</span>
             </div>
           </div>
-          <div class="info-item">
-            ${icon('card')}
-            <div>
-              <strong>Наличные, карта, QR-код</strong>
-              <span>Оплата в магазине и онлайн</span>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -235,30 +227,6 @@ function render() {
             <p class="about-card__meta">${site.hoursShort}</p>
             <a class="link" href="${site.map}" target="_blank" rel="noopener">Построить маршрут ${icon('arrow')}</a>
           </div>
-        </article>
-
-        <article class="about-card about-card--delivery">
-          <div>
-            <h3>Доставляем по всей России</h3>
-            <div class="carrier-logos" aria-label="Службы доставки">
-              <b>СДЭК</b>
-              <b>OZON</b>
-              <b>Яндекс<br>Доставка</b>
-              <b>ПОЧТА<br>РОССИИ</b>
-            </div>
-            <p class="about-card__meta">Быстро и надёжно — в любой город</p>
-            <a class="link" href="${site.vk}" target="_blank" rel="noopener">Подробнее ${icon('arrow')}</a>
-          </div>
-          <img src="images/gallery/gallery2.jpg" alt="Упаковка заказа" loading="lazy" width="180" height="220">
-        </article>
-
-        <article class="about-card about-card--pay">
-          <div>
-            <h3>Способы оплаты</h3>
-            <p>Наличные, карта, QR-код — в магазине и онлайн.</p>
-            <a class="btn btn--ghost btn--sm" href="${site.vk}" target="_blank" rel="noopener">Подробнее ${icon('arrow')}</a>
-          </div>
-          <img src="images/gallery/novinki.jpg" alt="Оплата в магазине" loading="lazy" width="180" height="220">
         </article>
       </section>
     </main>

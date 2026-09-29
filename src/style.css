@@ -338,7 +338,7 @@ svg { width: 18px; height: 18px; flex: none; }
 
 .info-strip__grid {
   display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr;
+  grid-template-columns: 1.3fr 1fr;
   min-height: 68px;
 }
 
@@ -738,7 +738,7 @@ svg { width: 18px; height: 18px; flex: none; }
 /* About cards */
 .about-row {
   display: grid;
-  grid-template-columns: 1.15fr 1fr 0.9fr;
+  grid-template-columns: 1fr;
   gap: 12px;
   padding-top: 28px;
   padding-bottom: 36px;
@@ -793,56 +793,6 @@ svg { width: 18px; height: 18px; flex: none; }
   padding: 16px;
 }
 
-.about-card--delivery,
-.about-card--pay {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-}
-
-.about-card--delivery > div,
-.about-card--pay > div {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  min-width: 0;
-  padding: 16px;
-}
-
-.about-card--delivery > img,
-.about-card--pay > img {
-  width: 34%;
-  min-height: 160px;
-  object-fit: cover;
-}
-
-.about-card--delivery h3,
-.about-card--pay h3 {
-  font-family: var(--sans);
-  font-size: 15px;
-  max-width: 16ch;
-}
-
-.carrier-logos {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.carrier-logos b {
-  color: #344336;
-  font-size: 13px;
-  font-weight: 800;
-  line-height: 0.9;
-}
-
-.carrier-logos b:nth-child(2) { color: #1269cb; font-size: 15px; }
-.carrier-logos b:nth-child(3) { color: #b13d31; font-size: 9px; }
-.carrier-logos b:nth-child(4) { color: #2065bd; font-size: 8px; }
-
 /* Footer */
 .footer {
   border-top: 1px solid var(--line);
@@ -895,9 +845,6 @@ svg { width: 18px; height: 18px; flex: none; }
 
   .stone-week { grid-template-columns: 1.4fr 1fr; }
 
-  .about-row { grid-template-columns: 1fr 1fr; }
-
-  .about-card--store { grid-column: 1 / -1; }
 }
 
 @media (max-width: 780px) {
@@ -1032,12 +979,9 @@ svg { width: 18px; height: 18px; flex: none; }
   .stone-aside__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
   .about-row {
-    grid-template-columns: 1fr;
     padding-top: 20px;
     padding-bottom: 24px;
   }
-
-  .about-card--store { grid-column: auto; }
 
   .footer__inner {
     flex-wrap: wrap;
@@ -1079,9 +1023,6 @@ svg { width: 18px; height: 18px; flex: none; }
   .about-card--store {
     grid-template-columns: 0.7fr 1fr;
   }
-
-  .about-card--delivery > img,
-  .about-card--pay > img { width: 30%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
