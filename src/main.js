@@ -113,7 +113,7 @@ function render() {
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero__copy">
           <p class="eyebrow">Натуральные камни и фурнитура</p>
-          <h1 id="hero-title">Вдохновение<br>в каждой бусине</h1>
+          <h1 id="hero-title">Вдохновение в каждой бусине</h1>
           <p class="hero__lead">Натуральные камни, фурнитура и всё для создания украшений в Казани. Для вашего хобби, творчества и стильных аксессуаров.</p>
           <div class="hero__actions">
             <a class="btn btn--solid" href="#categories">Перейти в каталог ${icon('arrow')}</a>
